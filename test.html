@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>打字机效果</title>
+  <style>
+    .red-text {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h1 v-html="displayedText"></h1>
+  </div>
+
+  <script src="https://unpkg.com/vue@next"></script>
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          lines: [
+            "这是一行文本，",
+            "其中一些字体是<span class='red-text'>红色</span>，其余为黑色。",
+            "这是另一行文本，其中没有样式。"
+          ],
+          currentLineIndex: 0,
+          typingSpeed: 100,
+          displayedText: ""
+        };
+      },
+      created() {
+        this.initTypingEffect();
+      },
+      methods: {
+        initTypingEffect() {
+          setInterval(() => {
+            this.typeText();
+          }, this.typingSpeed);
+        },
+        typeText() {
+          const currentLine = this.lines[this.currentLineIndex];
+
+          if (this.displayedText.length < currentLine.length) {
+            this.displayedText += currentLine.charAt(this.displayedText.length);
+          } else {
+            this.currentLineIndex = (this.currentLineIndex + 1) % this.lines.length;
+            this.displayedText = "";
+          }
+        }
+      }
+    });
+
+    app.mount('#app');
+  </script>
+</body>
+</html>

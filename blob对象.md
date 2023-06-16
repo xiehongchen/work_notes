@@ -168,3 +168,88 @@ let res = [];
 ```
 ## 通过url显示图片
 我们知道，img的src属性及background的url属性，都可以通过接收图片的网络地址或base64来显示图片，同样的，我们也可以把图片转化为Blob对象，生成URL（URL.createObjectURL(blob)），来显示图片。
+
+## base64转url显示和下载
+
+### dataurl，base64格式
+
+```
+data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMUAAADECAIAAACgBnICAAABPGlDQ1BJQ0MgUHJvZmlsZQAAKJFjYGDiSCwoyGFhYGDIzSspCnJ3UoiIjFJgf87AxsDOwMXAwmCdmFxc4BgQ4ANUwgCjUcG3awyMIPqyLsgsw08Fc+7ftHI7dutqrefvNacx1aMArpTU4mQg/QeIo5MLikoYGBgjgGzl8pICELsGyBYpAjoKyJ4AYqdD2EtA7CQIewdYTUiQM5B9BsgWSM5ITAGy7wDZOklI4ulIbKi9IMBIwI0kg5LUihIQ7ZxfUFmUmZ5RouAIDJlUBc+8ZD0dBSMDI2MGBlA4Q1R/vgF2AaMYB0KscjoDg901oGAPQiwqj4FhnS8Dg8QphJjSRQYGobsMDDuuFyQWJcIdwPiNpTjN2AjC5t7OwMA67f//z+EMDOyaDAx/r////3v7//9/lzEwMN9iYDjwDQB1a2AsngN5eAAAAGxlWElmTU0AKgAAAAgABAEaAAUAAAABAAAAPgEbAAUAAAABAAAARgEoAAMAAAABAAIAAIdpAAQAAAABAAAATgAAAAAAAABIAAAAAQAAAEgAAAABAAKgAgAEAAAAAQAAAMWgAwAEAAAAAQAAAMQAAAAAPyaneQAAAAlwSFlzAAALEwAACxMBAJqcGAAAA25JREFUeAHt0kERACAMA0HAv6DK6+DhnhsBedzsnZljCkQFXvTjRoFfgCcOygI8lTV98cRAWYCnsqYvnhgoC/BU1vTFEwNlAZ7Kmr54YqAswFNZ0xdPDJQFeCpr+uKJgbIAT2VNXzwxUBbgqazpiycGygI8lTV98cRAWYCnsqYvnhgoC/BU1vTFEwNlAZ7Kmr54YqAswFNZ0xdPDJQFeCpr+uKJgbIAT2VNXzwxUBbgqazpiycGygI8lTV98cRAWYCnsqYvnhgoC/BU1vTFEwNlAZ7Kmr54YqAswFNZ0xdPDJQFeCpr+uKJgbIAT2VNXzwxUBbgqazpiycGygI8lTV98cRAWYCnsqYvnhgoC/BU1vTFEwNlAZ7Kmr54YqAswFNZ0xdPDJQFeCpr+uKJgbIAT2VNXzwxUBbgqazpiycGygI8lTV98cRAWYCnsqYvnhgoC/BU1vTFEwNlAZ7Kmr54YqAswFNZ0xdPDJQFeCpr+uKJgbIAT2VNXzwxUBbgqazpiycGygI8lTV98cRAWYCnsqYvnhgoC/BU1vTFEwNlAZ7Kmr54YqAswFNZ0xdPDJQFeCpr+uKJgbIAT2VNXzwxUBbgqazpiycGygI8lTV98cRAWYCnsqYvnhgoC/BU1vTFEwNlAZ7Kmr54YqAswFNZ0xdPDJQFeCpr+uKJgbIAT2VNXzwxUBbgqazpiycGygI8lTV98cRAWYCnsqYvnhgoC/BU1vTFEwNlAZ7Kmr54YqAswFNZ0xdPDJQFeCpr+uKJgbIAT2VNXzwxUBbgqazpiycGygI8lTV98cRAWYCnsqYvnhgoC/BU1vTFEwNlAZ7Kmr54YqAswFNZ0xdPDJQFeCpr+uKJgbIAT2VNXzwxUBbgqazpiycGygI8lTV98cRAWYCnsqYvnhgoC/BU1vTFEwNlAZ7Kmr54YqAswFNZ0xdPDJQFeCpr+uKJgbIAT2VNXzwxUBbgqazpiycGygI8lTV98cRAWYCnsqYvnhgoC/BU1vTFEwNlAZ7Kmr54YqAswFNZ0xdPDJQFeCpr+uKJgbIAT2VNXzwxUBbgqazpiycGygI8lTV98cRAWYCnsqYvnhgoC/BU1vTFEwNlAZ7Kmr54YqAswFNZ0xdPDJQFeCpr+uKJgbIAT2VNXzwxUBbgqazpiycGygI8lTV9LWWiA7Dg6i2LAAAAAElFTkSuQmCC
+```
+
+### 切割数据
+
+```
+const arr = dataurl.split(',')
+[
+    "data:image/png;base64",
+    "iVBORw0KGgoAAAANSUhEUgAAAMUAAADECAIAAACgBnICAAABPGlDQ1BJQ0MgUHJvZmlsZQAAKJFjYGDiSCwoyGFhYGDIzSspCnJ3UoiIjFJgf87AxsDOwMXAwmCdmFxc4BgQ4ANUwgCjUcG3awyMIPqyLsgsw08Fc+7ftHI7dutqrefvNacx1aMArpTU4mQg/QeIo5MLikoYGBgjgGzl8pICELsGyBYpAjoKyJ4AYqdD2EtA7CQIewdYTUiQM5B9BsgWSM5ITAGy7wDZOklI4ulIbKi9IMBIwI0kg5LUihIQ7ZxfUFmUmZ5RouAIDJlUBc+8ZD0dBSMDI2MGBlA4Q1R/vgF2AaMYB0KscjoDg901oGAPQiwqj4FhnS8Dg8QphJjSRQYGobsMDDuuFyQWJcIdwPiNpTjN2AjC5t7OwMA67f//z+EMDOyaDAx/r////3v7//9/lzEwMN9iYDjwDQB1a2AsngN5eAAAAGxlWElmTU0AKgAAAAgABAEaAAUAAAABAAAAPgEbAAUAAAABAAAARgEoAAMAAAABAAIAAIdpAAQAAAABAAAATgAAAAAAAABIAAAAAQAAAEgAAAABAAKgAgAEAAAAAQAAAMWgAwAEAAAAAQAAAMQAAAAAPyaneQAAAAlwSFlzAAALEwAACxMBAJqcGAAAA25JREFUeAHt0kERACAMA0HAv6DK6+DhnhsBedzsnZljCkQFXvTjRoFfgCcOygI8lTV98cRAWYCnsqYvnhgoC/BU1vTFEwNlAZ7Kmr54YqAswFNZ0xdPDJQFeCpr+uKJgbIAT2VNXzwxUBbgqazpiycGygI8lTV98cRAWYCnsqYvnhgoC/BU1vTFEwNlAZ7Kmr54YqAswFNZ0xdPDJQFeCpr+uKJgbIAT2VNXzwxUBbgqazpiycGygI8lTV98cRAWYCnsqYvnhgoC/BU1vTFEwNlAZ7Kmr54YqAswFNZ0xdPDJQFeCpr+uKJgbIAT2VNXzwxUBbgqazpiycGygI8lTV98cRAWYCnsqYvnhgoC/BU1vTFEwNlAZ7Kmr54YqAswFNZ0xdPDJQFeCpr+uKJgbIAT2VNXzwxUBbgqazpiycGygI8lTV98cRAWYCnsqYvnhgoC/BU1vTFEwNlAZ7Kmr54YqAswFNZ0xdPDJQFeCpr+uKJgbIAT2VNXzwxUBbgqazpiycGygI8lTV98cRAWYCnsqYvnhgoC/BU1vTFEwNlAZ7Kmr54YqAswFNZ0xdPDJQFeCpr+uKJgbIAT2VNXzwxUBbgqazpiycGygI8lTV98cRAWYCnsqYvnhgoC/BU1vTFEwNlAZ7Kmr54YqAswFNZ0xdPDJQFeCpr+uKJgbIAT2VNXzwxUBbgqazpiycGygI8lTV98cRAWYCnsqYvnhgoC/BU1vTFEwNlAZ7Kmr54YqAswFNZ0xdPDJQFeCpr+uKJgbIAT2VNXzwxUBbgqazpiycGygI8lTV98cRAWYCnsqYvnhgoC/BU1vTFEwNlAZ7Kmr54YqAswFNZ0xdPDJQFeCpr+uKJgbIAT2VNXzwxUBbgqazpiycGygI8lTV98cRAWYCnsqYvnhgoC/BU1vTFEwNlAZ7Kmr54YqAswFNZ0xdPDJQFeCpr+uKJgbIAT2VNXzwxUBbgqazpiycGygI8lTV98cRAWYCnsqYvnhgoC/BU1vTFEwNlAZ7Kmr54YqAswFNZ0xdPDJQFeCpr+uKJgbIAT2VNXzwxUBbgqazpiycGygI8lTV98cRAWYCnsqYvnhgoC/BU1vTFEwNlAZ7Kmr54YqAswFNZ0xdPDJQFeCpr+uKJgbIAT2VNXzwxUBbgqazpiycGygI8lTV9LWWiA7Dg6i2LAAAAAElFTkSuQmCC"
+]
+```
+
+### 获取数据格式
+
+```
+const mime = arr[0].match(/:(.*?);/)[1]
+
+image/png
+```
+
+### 获取数据类型
+
+```
+const suffix = mime.split('/')[1]
+
+png
+```
+
+### 解码base64字符串
+
+- atob() //ASCII to Base64
+- btoa() //Base64 to ASCII
+
+```
+const bstr = atob(arr[1])
+
+PNG
+
+   
+IHDR   Å   Ä    r  <iCCPICC Profile  (c``âH,(Èaa``ÈÍ+)
+rwRR`ÎÀÆÀÎÀÅÀÂ`\\ààTÂ £QÁ·k ú².È,ÃOsîß´r;vëj­çï5§1Õ£ ®Ôâd ý£J#låò»È):
+È b§CØK@ì${XMH3}ÈHÎHL²ï Ù:IHâéHl¨½ ÀHÀ$Ôí_PYQ¢àTÏ¼d=##cP8CT¾v£B¬r:Ý5 `B,*a/Ä)ÒE¡»;®$%ÂÀø¥8ÍØÂæÞÎÀÀ:íÿÿÏáì¯ÿÿÿ{ûÿÿ100ßb`8ð
+ uk`,yx   leXIfMM *           >       F(       i       N       H      H            Å        Ä    ?&§y   	pHYs       nIDATxíÒA  AÀ¿ ÊëàáyÜìc
+D^ôãF_'Ê<5}ñÄ@Y§²¦/(ðTÖôÅeÊ¾xb ,ÀSYÓOx*kúâ² OeM_<1Pà©¬é'Ê<5}ñÄ@Y§²¦/(ðTÖôÅeÊ¾xb ,ÀSYÓOx*kúâ² OeM_<1Pà©¬é'Ê<5}ñÄ@Y§²¦/(ðTÖôÅeÊ¾xb ,ÀSYÓOx*kúâ² OeM_<1Pà©¬é'Ê<5}ñÄ@Y§²¦/(ðTÖôÅeÊ¾xb ,ÀSYÓOx*kúâ² OeM_<1Pà©¬é'Ê<5}ñÄ@Y§²¦/(ðTÖôÅeÊ¾xb ,ÀSYÓOx*kúâ² OeM_<1Pà©¬é'Ê<5}ñÄ@Y§²¦/(ðTÖôÅeÊ¾xb ,ÀSYÓOx*kúâ² OeM_<1Pà©¬é'Ê<5}ñÄ@Y§²¦/(ðTÖôÅeÊ¾xb ,ÀSYÓOx*kúâ² OeM_<1Pà©¬é'Ê<5}ñÄ@Y§²¦/(ðTÖôÅeÊ¾xb ,ÀSYÓOx*kúâ² OeM_<1Pà©¬é'Ê<5}ñÄ@Y§²¦/(ðTÖôÅeÊ¾xb ,ÀSYÓOx*kúâ² OeM_<1Pà©¬é'Ê<5}ñÄ@Y§²¦/(ðTÖôÅeÊ¾xb ,ÀSYÓOx*kúâ² OeM_<1Pà©¬é'Ê<5}ñÄ@Y§²¦/(ðTÖôÅeÊ¾xb ,ÀSYÓOx*kúâ² OeM_<1Pà©¬é'Ê<5}ñÄ@Y§²¦/(ðTÖôÅeÊ¾xb ,ÀSYÓOx*kúâ² OeM_<1Pà©¬é'Ê<5}-e¢°àê-    IEND®B`
+```
+
+### 获取ut8编码格式数据
+
+```
+const u8arr = new Uint8Array(n)
+while (n--) {
+	u8arr[n] = bstr.charCodeAt(n)
+}
+
+{
+    "0": 137,
+    "1": 80,
+    "2": 78,
+    "3": 71,
+    "4": 13,
+    "5": 10,
+    "6": 26,
+    "7": 10,
+    "8": 0,
+    .......
+}
+```
+
+### 返回file对象
+
+或者也可以返回blob对象
+
+```
+return new File([u8arr], `${filename}.${suffix}`, {
+	type: mime
+})
+```
+
