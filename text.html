@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html,body{
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="display: flex;flex-direction: column;height: 100%;padding: 20px;">
+        <div class="mui-content-padded">
+            <div class="mui-inline">
+                <font style="font-family: '微软雅黑';font-size: 1.2rem;">签字</font>
+            </div>
+        </div>
+        <div class="mui-content-canvasDiv" style="width: 100%;height: 100%;">
+            <div class="wrap" style="width: 100%;height: 100%;">
+                <canvas id="myCanvas" width="940" height="460" style="background-color: #ccc;"></canvas>
+            </div>
+        </div>
+        <div class="btn-wrap" style="display: flex;justify-content: center;align-items: center;">
+            <button onclick="save()" style="margin-right: 10px;">保存</button>
+            <button onclick="reset()">重置</button>
+        </div>
+    </div>
+    
+</body>
+<script>
+    var mousePressed = false;
+    var lastX, lastY;
+    var ctx = document.getElementById('myCanvas').getContext("2d");
+    var c = document.getElementById("myCanvas");
+    var selected1, selected2;
+    function InitThis() {
+        // 触摸屏
+        c.addEventListener('touchstart', function (event) {
+            if (event.targetTouches.length == 1) {
+                event.preventDefault(); // 阻止浏览器默认事件，重要
+                mousePressed = true;
+                Draw(event.touches[0].pageX - this.offsetLeft, event.touches[0].pageY - this.offsetTop, false);
+            }
+        }, false);
+        c.addEventListener('touchmove', function (event) {
+            if (event.targetTouches.length == 1) {
+                event.preventDefault(); // 阻止浏览器默认事件，重要
+                if (mousePressed) {
+                    Draw(event.touches[0].pageX - this.offsetLeft, event.touches[0].pageY - this.offsetTop, true);
+
+                }
+            }
+        }, false);
+        c.addEventListener('touchend', function (event) {
+            if (event.targetTouches.length == 1) {
+                event.preventDefault(); // 阻止浏览器默认事件，防止手写的时候拖动屏幕，重要
+                mousePressed = false;
+            }
+        }, false);
+        // 鼠标
+        c.onmousedown = function (event) {
+            mousePressed = true;
+            Draw(event.pageX - this.offsetLeft, event.pageY - this.offsetTop, false);
+        };
+        c.onmousemove = function (event) {
+            if (mousePressed) {
+                Draw(event.pageX - this.offsetLeft, event.pageY - this.offsetTop, true);
+            }
+        };
+        c.onmouseup = function (event) {
+            mousePressed = false;
+        };
+    }
+
+    function Draw(x, y, isDown) {
+        if (isDown) {
+            ctx.beginPath();
+            ctx.strokeStyle = selected2;
+            ctx.lineWidth = 5;
+            ctx.lineJoin = "round";
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(x, y);
+            ctx.closePath();
+            ctx.stroke();
+        }
+        lastX = x;
+        lastY = y;
+    }
+
+    function save(){
+        const url=c.toDataURL({format: "image/png", quality:1, width:12000, height:4000});
+        var dlLink = document.createElement('a');
+        dlLink.download = "签名";
+        dlLink.href = url;
+        //dlLink.dataset.downloadurl = [MIME_TYPE, dlLink.download, dlLink.href].join(':');
+        document.body.appendChild(dlLink);
+        dlLink.click();
+        document.body.removeChild(dlLink);
+    }
+    function reset(){
+        let w=c.width;
+        let h=c.height;
+        ctx.clearRect(0,0,w,h);
+    }
+    InitThis();
+</script>
+
+</html>
